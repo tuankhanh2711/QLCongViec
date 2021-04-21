@@ -1,0 +1,22 @@
+<h1 class="text-center">Quản lý</h1>
+<div class="group-button my-5">
+  <button class="btn btn-primary ml-3" (click)="step=0">Quản lí nhân viên</button>
+  <button class="btn btn-primary ml-3" (click)="step=1">Quản lí dự án</button>
+  <button class="btn btn-primary ml-3" (click)="step=2">Quản lí công việc</button>
+</div>
+
+
+<ng-container [ngSwitch]="step">
+
+  <ng-container *ngSwitchCase="0">
+    <app-manager-staff></app-manager-staff>
+  </ng-container>
+  <ng-container *ngSwitchCase="1">
+    <app-manager-project></app-manager-project>
+  </ng-container>
+  <ng-container *ngSwitchCase="2">
+    <app-manager-task></app-manager-task>
+
+  </ng-container>
+
+</ng-container>

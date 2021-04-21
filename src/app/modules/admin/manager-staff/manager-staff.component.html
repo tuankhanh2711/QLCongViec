@@ -1,0 +1,22 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Tên Nhân viên</th>
+      <th scope="col">Tên tài khoản</th>
+      <th scope="col">Chức năng</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let staff of staffList; let i=index">
+      <th scope="row">{{i+1}}</th>
+      <td>{{staff.tenNguoiDung}}</td>
+      <td>{{staff.tenDangNhap}}</td>
+      <td>
+        <button class="btn btn-primary mr-2">Thêm</button>
+        <button class="btn btn-success mr-2">Sửa</button>
+        <button class="btn btn-danger">Xóa</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
