@@ -1,30 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AdminService } from '../../admin/admin.service';
+import { NguoiDung } from './user.model';
 
-export const DATA_USER = [
-  {
-    id: 1,
-    tenDangNhap: 'admin',
-    matKhau: '123456',
-    tenNguoiDung: 'ADMIN',
-    role: 'quanly',
-  },
-  {
-    id: 2,
-    tenDangNhap: 'nv1',
-    matKhau: '123456',
-    tenNguoiDung: 'Nhân viên 1',
-    role: 'nhanvien',
-  },
-  {
-    id: 3,
-    tenDangNhap: 'nv2',
-    matKhau: '123456',
-    tenNguoiDung: 'Nhân viên 2',
-    role: 'nhanvien',
-  },
-];
+// export const DATA_USER = [
+//   {
+//     id: 1,
+//     tenDangNhap: 'admin',
+//     matKhau: '123456',
+//     tenNguoiDung: 'ADMIN',
+//     role: 'quanly',
+//   },
+//   {
+//     id: 2,
+//     tenDangNhap: 'nv1',
+//     matKhau: '123456',
+//     tenNguoiDung: 'Nhân viên 1',
+//     role: 'nhanvien',
+//   },
+//   {
+//     id: 3,
+//     tenDangNhap: 'nv2',
+//     matKhau: '123456',
+//     tenNguoiDung: 'Nhân viên 2',
+//     role: 'nhanvien',
+//   },
+//   {
+//     id: 4,
+//     tenDangNhap: 'nv3',
+//     matKhau: '123456',
+//     tenNguoiDung: 'Nhân viên 3',
+//     role: 'nhanvien',
+//   },
+// ];
 
 @Component({
   selector: 'app-login',
@@ -33,9 +42,13 @@ export const DATA_USER = [
 })
 export class LoginComponent implements OnInit {
   isSubmited: boolean = false;
-  userList = DATA_USER;
+  userList: NguoiDung[] = [];
   loginForm: FormGroup;
-  constructor(private FormBuilder: FormBuilder, private router: Router) {
+  constructor(
+    private FormBuilder: FormBuilder,
+    private router: Router,
+    private adminService: AdminService
+  ) {
     this.loginForm = this.FormBuilder.group({
       tenDangNhap: this.FormBuilder.control('', [Validators.required]),
       matKhau: this.FormBuilder.control('', [Validators.required]),
@@ -45,6 +58,11 @@ export class LoginComponent implements OnInit {
     // public matKhau: string,
     // public tenNguoiDung: string,
     // public role: string
+  }
+  ngOnInit() {
+    this.adminService.getStaff().then((el) => {
+      this.userList = el;
+    });
   }
   onLogin() {
     this.isSubmited = true;
@@ -93,5 +111,4 @@ export class LoginComponent implements OnInit {
     });
     return resule;
   }
-  ngOnInit() {}
 }
