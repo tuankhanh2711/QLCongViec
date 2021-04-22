@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CongViec } from 'src/app/shared/models/task.model';
 import { environment } from '../../../environments/environment';
 import { NguoiDung } from '../core/login/user.model';
+import { DuAn } from 'src/app/shared/models/project.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -19,8 +20,18 @@ export class AdminService {
         return res as NguoiDung[];
       });
   }
+  addStaff(user:NguoiDung){ 
+    this.http.post(this.baseURL+'NguoiDung', user);
+  }
 
-  getProject() {}
+  getProject() {
+    return this.http
+      .get(this.baseURL + 'DuAn')
+      .toPromise()
+      .then((res) => {
+        return res as DuAn[]; 
+      });
+  }
   getTask() {
     return this.http
       .get(this.baseURL + 'CongViec')

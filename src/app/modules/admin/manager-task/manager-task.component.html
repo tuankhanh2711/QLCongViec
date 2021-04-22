@@ -1,6 +1,4 @@
-<p>manager-task works!</p>
-
-<button class="btn btn-primary">Thêm công việc +</button>
+<button class="btn btn-primary offset-10 mb-2">Thêm công việc +</button>
 <table class="table">
   <thead>
     <tr>
@@ -14,7 +12,7 @@
     <tr *ngFor="let task of TaskList; let i = index">
       <th scope="row">{{ i + 1 }}</th>
       <td>{{ task.noiDung }}</td>
-      <td>{{task.trangThai ? 'Đã hoàn thành' :' Chưa hoàn thành'}}</td>
+      <td>{{ task.trangThai ? "Đã hoàn thành" : " Chưa hoàn thành" }}</td>
       <td>
         <button class="btn btn-primary mr-2">Thêm</button>
         <button class="btn btn-success mr-2">Sửa</button>

@@ -1,14 +1,16 @@
 <h1 class="text-center">Nhân viên</h1>
-<button class="btn btn-primary" (click)="step=0">Thông tin nhân viên</button>
-<button class="btn btn-primary" (click)="step=1">Công việc nhân viên</button>
+<button class="btn btn-primary ml-3" (click)="step = 0">
+  Thông tin nhân viên
+</button>
+<button class="btn btn-primary ml-3" (click)="step = 1">
+  Công việc nhân viên
+</button>
 
 <ng-container [ngSwitch]="step">
-
   <ng-container *ngSwitchCase="1">
     <app-task-list></app-task-list>
   </ng-container>
   <ng-container *ngSwitchCase="0">
     <!-- <app-edit-profile></app-edit-profile> -->
   </ng-container>
-
 </ng-container>
