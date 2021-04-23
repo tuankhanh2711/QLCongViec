@@ -1,3 +1,22 @@
-<p>
-  task-list works!
-</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Tên Công việc</th>
+      <th scope="col">Trạng thái</th>
+      <th scope="col">Chức năng</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let task of taskList; let i = index">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ task.noiDung }}</td>
+      <td>{{ task.trangThai ? "Đã hoàn thành" : " Chưa hoàn thành" }}</td>
+      <td>
+        <button class="btn btn-primary mr-2">Thêm</button>
+        <button class="btn btn-success mr-2">Sửa</button>
+        <button class="btn btn-danger">Xóa</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

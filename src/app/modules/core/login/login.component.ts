@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
   isSubmited: boolean = false;
   userList: NguoiDung[] = [];
   loginForm: FormGroup;
+  userid: string;
   constructor(
     private FormBuilder: FormBuilder,
     private router: Router,
@@ -53,6 +54,7 @@ export class LoginComponent implements OnInit {
       tenDangNhap: this.FormBuilder.control('', [Validators.required]),
       matKhau: this.FormBuilder.control('', [Validators.required]),
     });
+    // localStorage.setItem('id', '2');
     // public id: number,
     // public tenDangNhap: string,
     // public matKhau: string,
@@ -60,6 +62,7 @@ export class LoginComponent implements OnInit {
     // public role: string
   }
   ngOnInit() {
+    localStorage.removeItem('id');
     this.adminService.getStaff().then((el) => {
       this.userList = el;
     });
@@ -74,10 +77,13 @@ export class LoginComponent implements OnInit {
       this.isSubmited = false;
       let role = this.checkUserRole();
       if (role === 'quanly') {
+        // localStorage.setItem('id', this.loginForm.controls.id.value);
         this.router.navigate(['/quan-ly']);
       }
       if (role === 'nhanvien') {
+        // this.adminService.getidUser(this.loginForm.controls.id.value);
         this.router.navigate(['/nhan-vien']);
+        localStorage.setItem('id', this.userid);
       }
       // else {
       //   this.router.navigate(['/login']);
@@ -107,6 +113,7 @@ export class LoginComponent implements OnInit {
     this.userList.find((ele) => {
       if (ele.tenDangNhap === this.loginForm.controls.tenDangNhap.value) {
         resule = ele.role;
+        this.userid = ele.id.toString();
       }
     });
     return resule;

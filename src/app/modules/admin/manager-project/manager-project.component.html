@@ -44,7 +44,10 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let project of projectList; let i = index">
+    <tr
+      *ngFor="let project of projectList; let i = index"
+      (click)="onViewTaskByIdProject(project.id)"
+    >
       <th scope="row">{{ i + 1 }}</th>
       <td>{{ project.tenDuAn }}</td>
       <td>{{ project.trangThai ? "Đã hoàn thành" : " Chưa hoàn thành" }}</td>
@@ -56,3 +59,8 @@
     </tr>
   </tbody>
 </table>
+
+<div *ngFor="let task of taskListOfProject">
+  <p>{{ task.noiDung }}</p>
+  <p>{{ task.trangThai }}</p>
+</div>

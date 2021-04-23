@@ -47,14 +47,15 @@ export class ManagerStaffComponent implements OnInit {
     });
   }
   onSave() {
+    debugger;
     if (this.createUserForm.invalid) {
       return;
     }
-    if (this.createUserForm.controls.tenNguoiDung.value) {
-    } else {
-      this.adminService.addStaff(this.createUserForm.value);
-      this.closeResult;
-    }
+    // if (this.createUserForm.controls.tenNguoiDung.value) {
+
+    // } else {
+    this.adminService.addStaff(this.createUserForm.value);
+    // }
   }
   onAddStaff(content) {
     this.modalService

@@ -20,8 +20,12 @@ export class AdminService {
         return res as NguoiDung[];
       });
   }
-  addStaff(user:NguoiDung){ 
-    this.http.post(this.baseURL+'NguoiDung', user);
+  addStaff(user: NguoiDung) {
+    debugger;
+    return this.http.post(this.baseURL + 'NguoiDung', user).toPromise()
+    .then((res) => {
+      return res as NguoiDung;
+    });
   }
 
   getProject() {
@@ -29,7 +33,7 @@ export class AdminService {
       .get(this.baseURL + 'DuAn')
       .toPromise()
       .then((res) => {
-        return res as DuAn[]; 
+        return res as DuAn[];
       });
   }
   getTask() {
@@ -39,5 +43,17 @@ export class AdminService {
       .then((res) => {
         return res as CongViec[];
       });
+  }
+  getTaskByProject(id: string) {
+    return this.http
+      .get(this.baseURL + 'CongViec/GetCongViecByDuAnId/' + id)
+      .toPromise()
+      .then((res) => {
+        return res as CongViec[];
+      });
+  }
+  getidUser(id: number) {
+    debugger;
+    localStorage.setItem('id', id.toString());
   }
 }

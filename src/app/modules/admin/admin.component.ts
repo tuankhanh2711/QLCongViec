@@ -7,7 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminComponent implements OnInit {
   step: number = 0;
-
   constructor() {}
 
   ngOnInit() {}
