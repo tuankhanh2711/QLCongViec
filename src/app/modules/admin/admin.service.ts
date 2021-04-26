@@ -93,14 +93,14 @@ export class AdminService {
   deleteTask(id: number) {
     return this.http.delete(this.baseURL + 'CongViec/' + id).toPromise();
   }
-  // getTaskByProject(id: string) {
-  //   return this.http
-  //     .get(this.baseURL + 'CongViec/GetCongViecByDuAnId/' + id)
-  //     .toPromise()
-  //     .then((res) => {
-  //       return res as CongViec[];
-  //     });
-  // }
+  getTaskByProject(id: string) {
+    return this.http
+      .get(this.baseURL + 'CongViec/GetCongViecByDuAnId/' + id)
+      .toPromise()
+      .then((res) => {
+        return res as CongViec[];
+      });
+  }
   // getidUser(id: number) {
   //   localStorage.setItem('id', id.toString());
   // }

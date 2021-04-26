@@ -36,6 +36,11 @@ export class ManagerProjectComponent implements OnInit {
     this.adminService.getProject().then((el) => {
       this.projectList = el;
     });
+    this.adminService
+      .getTaskByProject(localStorage.getItem('idProject'))
+      .then((el) => {
+        this.taskListOfProject = el;
+      });
   }
   // ngDoCheck() {
   //   if (this.idProject === null) {
@@ -49,6 +54,9 @@ export class ManagerProjectComponent implements OnInit {
   // }
 
   onAddProject(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+  onShowDetail(template: TemplateRef<any>, project: DuAn) {
     this.modalRef = this.modalService.show(template);
   }
   onAddTask() {

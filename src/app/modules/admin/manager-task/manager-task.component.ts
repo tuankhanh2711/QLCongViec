@@ -62,5 +62,10 @@ export class ManagerTaskComponent implements OnInit {
     this.modalRef.hide();
     this.resetForm();
   }
-  resetForm() {}
+  resetForm() {
+    this.createTaskForm.controls.id.setValue(0);
+    this.createTaskForm.controls.noiDung.setValue('');
+    this.createTaskForm.controls.duAnId.setValue(null);
+    this.createTaskForm.controls.nguoiDungId.setValue(null);
+  }
 }
