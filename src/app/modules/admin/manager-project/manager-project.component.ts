@@ -1,6 +1,7 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit, TemplateRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DuAn } from 'src/app/shared/models/project.model';
 import { CongViec } from 'src/app/shared/models/task.model';
 import { AdminService } from '../admin.service';
@@ -10,59 +11,91 @@ import { AdminService } from '../admin.service';
   templateUrl: './manager-project.component.html',
   styleUrls: ['./manager-project.component.scss'],
 })
-export class ManagerProjectComponent implements OnInit, DoCheck {
+export class ManagerProjectComponent implements OnInit {
   projectList: DuAn[] = [];
   taskListOfProject: CongViec[] = [];
   closeResult: string;
   idProject: string = null;
+  createProjectForm: FormGroup;
+  modalRef: BsModalRef;
+  isEdited: boolean = false;
 
   constructor(
     private adminService: AdminService,
-    private modalService: NgbModal,
-    private router: Router
-  ) {}
+    private router: Router,
+    private modalService: BsModalService,
+    private fb: FormBuilder
+  ) {
+    this.createProjectForm = this.fb.group({
+      id: this.fb.control(0),
+      tenDuAn: this.fb.control('', [Validators.required]),
+    });
+  }
 
   ngOnInit() {
     this.adminService.getProject().then((el) => {
       this.projectList = el;
     });
   }
-  ngDoCheck() {
-    if (this.idProject === null) {
-      localStorage.setItem('idProject', '1');
+  // ngDoCheck() {
+  //   if (this.idProject === null) {
+  //     localStorage.setItem('idProject', '1');
+  //   }
+  //   this.adminService
+  //     .getTaskByProject(localStorage.getItem('idProject'))
+  //     .then((el) => {
+  //       this.taskListOfProject = el;
+  //     });
+  // }
+
+  onAddProject(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+  onAddTask() {
+    this.taskListOfProject.push({
+      noiDung: '',
+      nguoiDungId: null,
+      duAnId: this.createProjectForm.controls.id.value,
+    });
+  }
+  onEditProject(template: TemplateRef<any>, project: DuAn) {
+    this.isEdited = true;
+    this.modalRef = this.modalService.show(template);
+    this.createProjectForm.controls.id.setValue(project.id);
+    this.createProjectForm.controls.tenDuAn.setValue(project.tenDuAn);
+    this.taskListOfProject = project.congViecs;
+  }
+  onDeleteProject(project: DuAn) {
+    this.adminService.deleteProject(project.id);
+  }
+  onSave() {
+    let project: DuAn = {
+      ...this.createProjectForm.value,
+      CongViecs: this.taskListOfProject,
+    };
+    if (this.createProjectForm.invalid) {
+      return;
     }
-    this.adminService
-      .getTaskByProject(localStorage.getItem('idProject'))
-      .then((el) => {
-        this.taskListOfProject = el;
-      });
+    if (this.isEdited == true) {
+      this.adminService.editProject(project);
+      this.onClose();
+    } else {
+      this.adminService.addProject(project);
+      this.onClose();
+    }
   }
-
-  onAddProject(content) {
-    this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title' })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
-  }
-
   onViewTaskByIdProject(id: number) {
     this.idProject = id.toString();
     localStorage.setItem('idProject', this.idProject);
     this.router.navigate(['/quan-ly']);
   }
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
+  onClose() {
+    this.modalRef.hide();
+    this.resetForm();
+  }
+  resetForm() {
+    this.createProjectForm.controls.id.setValue(0);
+    this.createProjectForm.controls.tenDuAn.setValue('');
+    this.taskListOfProject = [];
   }
 }

@@ -21,13 +21,24 @@ export class AdminService {
       });
   }
   addStaff(user: NguoiDung) {
-    debugger;
-    return this.http.post(this.baseURL + 'NguoiDung', user).toPromise()
-    .then((res) => {
-      return res as NguoiDung;
-    });
+    return this.http
+      .post(this.baseURL + 'NguoiDung', user)
+      .toPromise()
+      .then((res) => {
+        return res as NguoiDung;
+      });
   }
-
+  editStaff(user: NguoiDung) {
+    return this.http
+      .put(this.baseURL + 'NguoiDung/' + user.id, user)
+      .toPromise()
+      .then((res) => {
+        return res as NguoiDung;
+      });
+  }
+  deleteStaff(id: number) {
+    return this.http.delete(this.baseURL + 'NguoiDung/' + id).toPromise();
+  }
   getProject() {
     return this.http
       .get(this.baseURL + 'DuAn')
@@ -35,6 +46,25 @@ export class AdminService {
       .then((res) => {
         return res as DuAn[];
       });
+  }
+  addProject(project: DuAn) {
+    return this.http
+      .post(this.baseURL + 'DuAn', project)
+      .toPromise()
+      .then((res) => {
+        return res as DuAn;
+      });
+  }
+  editProject(project: DuAn) {
+    return this.http
+      .put(this.baseURL + 'DuAn/' + project.id, project)
+      .toPromise()
+      .then((res) => {
+        return res as DuAn;
+      });
+  }
+  deleteProject(id: number) {
+    return this.http.delete(this.baseURL + 'DuAn/' + id).toPromise();
   }
   getTask() {
     return this.http
@@ -44,16 +74,34 @@ export class AdminService {
         return res as CongViec[];
       });
   }
-  getTaskByProject(id: string) {
+  addTask(task: CongViec) {
     return this.http
-      .get(this.baseURL + 'CongViec/GetCongViecByDuAnId/' + id)
+      .post(this.baseURL + 'CongViec', task)
       .toPromise()
       .then((res) => {
-        return res as CongViec[];
+        return res as CongViec;
       });
   }
-  getidUser(id: number) {
-    debugger;
-    localStorage.setItem('id', id.toString());
+  editTask(task: CongViec) {
+    return this.http
+      .put(this.baseURL + 'CongViec/' + task.id, task)
+      .toPromise()
+      .then((res) => {
+        return res as CongViec;
+      });
   }
+  deleteTask(id: number) {
+    return this.http.delete(this.baseURL + 'CongViec/' + id).toPromise();
+  }
+  // getTaskByProject(id: string) {
+  //   return this.http
+  //     .get(this.baseURL + 'CongViec/GetCongViecByDuAnId/' + id)
+  //     .toPromise()
+  //     .then((res) => {
+  //       return res as CongViec[];
+  //     });
+  // }
+  // getidUser(id: number) {
+  //   localStorage.setItem('id', id.toString());
+  // }
 }

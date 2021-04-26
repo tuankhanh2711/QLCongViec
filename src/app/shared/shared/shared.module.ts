@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModalModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   imports: [
@@ -11,7 +11,7 @@ import { NgbModalModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModalModule,
+    ModalModule.forRoot(),
   ],
   declarations: [EditProfileComponent],
   exports: [
@@ -20,7 +20,7 @@ import { NgbModalModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     ReactiveFormsModule,
     EditProfileComponent,
-    NgbModule,
+    ModalModule,
   ],
 })
 export class SharedModule {}

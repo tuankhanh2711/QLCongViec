@@ -1,9 +1,9 @@
 import { NguoiDung } from './../../core/login/user.model';
 // import { DATA_USER } from './../../core/login/login.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { AdminService } from '../admin.service';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-manager-staff',
@@ -15,14 +15,20 @@ export class ManagerStaffComponent implements OnInit {
   staffRole: string = 'nhanvien';
   closeResult: string;
   createUserForm: FormGroup;
+  modalRef: BsModalRef;
+  isEdited: boolean = false;
 
   constructor(
     private adminService: AdminService,
-    private modalService: NgbModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private modalService: BsModalService
   ) {
     this.createUserForm = this.fb.group({
-      tenNguoiDung: this.fb.control('', [Validators.required]),
+      id: this.fb.control(0),
+      tenNguoiDung: this.fb.control({ value: '', disabled: this.isEdited }, [
+        Validators.required,
+      ]),
+      // [{value: null, disabled: this.isDisabled},
       tenDangNhap: this.fb.control('', [Validators.required]),
       matKhau: this.fb.control('', [Validators.required]),
       role: this.fb.control('', [Validators.required]),
@@ -47,35 +53,43 @@ export class ManagerStaffComponent implements OnInit {
     });
   }
   onSave() {
-    debugger;
     if (this.createUserForm.invalid) {
       return;
     }
-    // if (this.createUserForm.controls.tenNguoiDung.value) {
-
-    // } else {
-    this.adminService.addStaff(this.createUserForm.value);
-    // }
-  }
-  onAddStaff(content) {
-    this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title' })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
-  }
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
+    if (this.isEdited == true) {
+      this.adminService.editStaff(this.createUserForm.value);
+      this.onClose();
     } else {
-      return `with: ${reason}`;
+      this.adminService.addStaff(this.createUserForm.value);
+      this.onClose();
     }
+  }
+  onAddStaff(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+  onDeleteStaff(staff: NguoiDung) {
+    this.adminService.deleteStaff(staff.id);
+  }
+
+  onEditStaff(template: TemplateRef<any>, staff: NguoiDung) {
+    this.isEdited = true;
+    this.modalRef = this.modalService.show(template);
+    this.createUserForm.controls.id.setValue(staff.id);
+    this.createUserForm.controls.tenNguoiDung.setValue(staff.tenNguoiDung);
+    this.createUserForm.controls.tenDangNhap.setValue(staff.tenDangNhap);
+    this.createUserForm.controls.matKhau.setValue(staff.matKhau);
+    this.createUserForm.controls.role.setValue(staff.role);
+  }
+  onClose() {
+    this.isEdited = false;
+    this.modalRef.hide();
+    this.resetForm();
+  }
+  resetForm() {
+    this.createUserForm.controls.id.setValue(0);
+    this.createUserForm.controls.tenNguoiDung.setValue('');
+    this.createUserForm.controls.tenDangNhap.setValue('');
+    this.createUserForm.controls.matKhau.setValue('');
+    this.createUserForm.controls.role.setValue('');
   }
 }

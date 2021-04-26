@@ -1,36 +1,67 @@
-<button class="btn btn-primary offset-10 mb-2" (click)="onAddProject(add)">
-  Thêm dự án +
+<button
+  type="button"
+  class="btn btn-primary offset-10 mb-3"
+  (click)="onAddProject(template)"
+>
+  Thên dự án +
 </button>
 
-<ng-template #add let-modal>
+<ng-template #template>
   <div class="modal-header">
-    <h4 class="modal-title text-center" id="modal-basic-title">
-      Thêm dự án mới
-    </h4>
+    <h4 class="modal-title pull-left">Thêm dự án</h4>
     <button
       type="button"
-      class="close"
+      class="close pull-right"
       aria-label="Close"
-      (click)="modal.dismiss('Cross click')"
+      (click)="onClose()"
     >
-      <span aria-hidden="true">×</span>
+      <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <div class="form-group">
-      <label for="">Tên dự án</label>
-      <input type="text" class="form-control" />
+    <form action="" [formGroup]="createProjectForm">
+      <div class="form-group">
+        <label for="">Tên dự án</label>
+        <input type="text" formControlName="tenDuAn" class="form-control" />
+      </div>
+      <button class="btn btn-primary" (click)="onAddTask()">
+        Thêm công việc +
+      </button>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Tên công việc</th>
+            <th scope="col">Nhân viên đảm nhiệm</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let task of taskListOfProject">
+            <th scope="col">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="task.noiDung"
+                [ngModelOptions]="{ standalone: true }"
+              />
+              <ng-template #noiDungTemplate>{{ task?.noiDung }}</ng-template>
+            </th>
+            <th scope="col">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="task.nguoiDungId"
+                [ngModelOptions]="{ standalone: true }"
+              />
+              <ng-template #IdTemplate>{{ task?.nguoiDungId }}</ng-template>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+    <div class="group-but offset-8">
+      <button class="btn btn-primary mr-2" (click)="onSave()">Lưu</button>
+      <button class="btn btn-danger" (click)="onClose()">Hủy bỏ</button>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary" (click)="onSave()">Lưu</button>
-    <button
-      type="button"
-      class="btn btn-outline-dark"
-      (click)="modal.close('Save click')"
-    >
-      Cancel
-    </button>
   </div>
 </ng-template>
 
@@ -52,15 +83,19 @@
       <td>{{ project.tenDuAn }}</td>
       <td>{{ project.trangThai ? "Đã hoàn thành" : " Chưa hoàn thành" }}</td>
       <td>
-        <button class="btn btn-primary mr-2">Thêm</button>
-        <button class="btn btn-success mr-2">Sửa</button>
-        <button class="btn btn-danger">Xóa</button>
+        <button
+          class="btn btn-success mr-2"
+          (click)="onEditProject(template, project)"
+        >
+          Sửa
+        </button>
+        <button class="btn btn-danger" (click)="onDeleteProject(project)">Xóa</button>
       </td>
     </tr>
   </tbody>
 </table>
 
-<div *ngFor="let task of taskListOfProject">
+<!-- <div *ngFor="let task of taskListOfProject">
   <p>{{ task.noiDung }}</p>
   <p>{{ task.trangThai }}</p>
-</div>
+</div> -->
