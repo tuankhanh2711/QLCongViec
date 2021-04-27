@@ -14,6 +14,7 @@ import { AdminService } from '../admin.service';
 export class ManagerProjectComponent implements OnInit {
   projectList: DuAn[] = [];
   taskListOfProject: CongViec[] = [];
+  taskList: CongViec[] = [];
   closeResult: string;
   idProject: string = null;
   createProjectForm: FormGroup;
@@ -29,6 +30,7 @@ export class ManagerProjectComponent implements OnInit {
     this.createProjectForm = this.fb.group({
       id: this.fb.control(0),
       tenDuAn: this.fb.control('', [Validators.required]),
+      trangThai: this.fb.control(null, [Validators.required]),
     });
   }
 
@@ -36,11 +38,6 @@ export class ManagerProjectComponent implements OnInit {
     this.adminService.getProject().then((el) => {
       this.projectList = el;
     });
-    this.adminService
-      .getTaskByProject(localStorage.getItem('idProject'))
-      .then((el) => {
-        this.taskListOfProject = el;
-      });
   }
   // ngDoCheck() {
   //   if (this.idProject === null) {
@@ -58,6 +55,7 @@ export class ManagerProjectComponent implements OnInit {
   }
   onShowDetail(template: TemplateRef<any>, project: DuAn) {
     this.modalRef = this.modalService.show(template);
+    this.onViewTaskByIdProject(project);
   }
   onAddTask() {
     this.taskListOfProject.push({
@@ -71,6 +69,7 @@ export class ManagerProjectComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
     this.createProjectForm.controls.id.setValue(project.id);
     this.createProjectForm.controls.tenDuAn.setValue(project.tenDuAn);
+    this.createProjectForm.controls.trangThai.setValue(project.trangThai);
     this.taskListOfProject = project.congViecs;
   }
   onDeleteProject(project: DuAn) {
@@ -92,10 +91,11 @@ export class ManagerProjectComponent implements OnInit {
       this.onClose();
     }
   }
-  onViewTaskByIdProject(id: number) {
-    this.idProject = id.toString();
-    localStorage.setItem('idProject', this.idProject);
-    this.router.navigate(['/quan-ly']);
+  onViewTaskByIdProject(project: DuAn) {
+    this.idProject = project.id.toString();
+    this.adminService.getTaskByProject(this.idProject).then((el) => {
+      this.taskList = el;
+    });
   }
   onClose() {
     this.modalRef.hide();
@@ -104,6 +104,6 @@ export class ManagerProjectComponent implements OnInit {
   resetForm() {
     this.createProjectForm.controls.id.setValue(0);
     this.createProjectForm.controls.tenDuAn.setValue('');
-    this.taskListOfProject = [];
+    this.taskListOfProject = null;
   }
 }

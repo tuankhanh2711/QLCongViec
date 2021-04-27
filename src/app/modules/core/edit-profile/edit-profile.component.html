@@ -1,3 +1,71 @@
-<p>
-  edit-profile works!
-</p>
+<!-- <div>
+  <p>{{ staff.tenNguoiDung }}</p>
+  <p>{{ staff.tenDangNhap }}</p>
+  <p>{{ staff.matKhau }}</p>
+</div> -->
+
+<div class="row">
+  <div class="col-10 offset-1">
+    <table class="table mt-5">
+      <thead>
+        <tr>
+          <th scope="col">Họ và tên</th>
+          <th scope="col">Tên tài khoản</th>
+          <th scope="col">Mật khẩu</th>
+          <th scope="col">Chức năng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="col">{{ staff.tenNguoiDung }}</th>
+          <th scope="col">{{ staff.tenDangNhap }}</th>
+          <th scope="col">{{ staff.matKhau }}</th>
+          <th scope="col">
+            <button class="btn btn-primary" (click)="onChangePass(template,staff)">
+              Đổi mật khẩu
+            </button>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Đổi mật khẩu</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="onClose()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form action="" [formGroup]="editUserForm">
+      <div class="form-group">
+        <label for="">Tên nhân viên</label>
+        <input
+          type="text"
+          formControlName="tenNguoiDung"
+          class="form-control"
+          disabled
+        />
+      </div>
+      <div class="form-group">
+        <label for="">Tên tài khoản</label>
+        <input type="text" formControlName="tenDangNhap" class="form-control" disabled />
+      </div>
+      <div class="form-group">
+        <label for="">Mật khẩu</label>
+        <input type="text" formControlName="matKhau" class="form-control" />
+      </div>
+    </form>
+    <div class="group-but offset-8">
+      <button class="btn btn-primary mr-2" (click)="onSave()">Lưu</button>
+      <button class="btn btn-danger" (click)="onClose()">Hủy bỏ</button>
+    </div>
+  </div>
+</ng-template>
