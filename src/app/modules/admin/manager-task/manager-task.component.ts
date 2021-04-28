@@ -1,7 +1,11 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { DuAn } from 'src/app/shared/models/project.model';
 import { CongViec } from 'src/app/shared/models/task.model';
+import { NguoiDung } from '../../core/login/user.model';
+import { ManagerProjectService } from '../manager-project/manager-project.service';
+import { ManagerStaffService } from '../manager-staff/manager-staff.service';
 import { ManagerTaskService } from './manager-task.service';
 
 @Component({
@@ -11,11 +15,15 @@ import { ManagerTaskService } from './manager-task.service';
 })
 export class ManagerTaskComponent implements OnInit {
   TaskList: CongViec[] = [];
+  userList: NguoiDung[] = [];
+  projectList: DuAn[] = [];
   createTaskForm: FormGroup;
   modalRef: BsModalRef;
   isEdited: boolean = false;
   constructor(
     private mTaskService: ManagerTaskService,
+    private mProjectService: ManagerProjectService,
+    private mStaffService: ManagerStaffService,
     private modalService: BsModalService,
     private fb: FormBuilder
   ) {
@@ -29,6 +37,14 @@ export class ManagerTaskComponent implements OnInit {
   ngOnInit() {
     this.mTaskService.getTask().then((el) => {
       this.TaskList = el;
+    });
+    this.mStaffService.getStaff().then((el) => {
+      this.userList = el.filter((f) => {
+        return f.role === 'nhanvien';
+      });
+    });
+    this.mProjectService.getProject().then((el) => {
+      this.projectList = el;
     });
   }
 

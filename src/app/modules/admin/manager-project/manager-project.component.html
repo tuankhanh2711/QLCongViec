@@ -58,13 +58,16 @@
               <ng-template #noiDungTemplate>{{ task?.noiDung }}</ng-template>
             </th>
             <th scope="col">
-              <input
-                type="text"
+              <select
                 class="form-control"
+                id="exampleFormControlSelect1"
                 [(ngModel)]="task.nguoiDungId"
                 [ngModelOptions]="{ standalone: true }"
-              />
-              <ng-template #IdTemplate>{{ task?.nguoiDungId }}</ng-template>
+              >
+                <option *ngFor="let item of userList" [ngValue]="item.id">
+                  {{ item.tenNguoiDung }}
+                </option>
+              </select>
             </th>
           </tr>
         </tbody>
@@ -156,3 +159,11 @@
     </div>
   </div>
 </ng-template>
+
+<div class="col-4 offset-3">
+  <select class="form-control mt-5" id="exampleFormControlSelect1">
+    <option *ngFor="let item of userList" (value)="(item.id)">
+      {{ item.tenNguoiDung }}
+    </option>
+  </select>
+</div>

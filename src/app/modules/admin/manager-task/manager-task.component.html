@@ -26,11 +26,29 @@
       </div>
       <div class="form-group">
         <label for="">Công việc thuộc dự án</label>
-        <input type="text" formControlName="duAnId" class="form-control" />
+        <!-- <input type="text" formControlName="duAnId" class="form-control" /> -->
+        <select
+          class="form-control"
+          id="exampleFormControlSelect1"
+          formControlName="duAnId"
+        >
+          <option *ngFor="let pro of projectList" [ngValue]="pro.id">
+            {{ pro.tenDuAn }}
+          </option>
+        </select>
       </div>
       <div class="form-group">
         <label for="">Nhân viên đảm nhận</label>
-        <input type="text" formControlName="nguoiDungId" class="form-control" />
+        <!-- <input type="text" formControlName="nguoiDungId" class="form-control" /> -->
+        <select
+          class="form-control"
+          id="exampleFormControlSelect2"
+          formControlName="nguoiDungId"
+        >
+          <option *ngFor="let item of userList" [ngValue]="item.id">
+            {{ item.tenNguoiDung }}
+          </option>
+        </select>
       </div>
     </form>
     <div class="group-but offset-8">
@@ -55,7 +73,12 @@
       <td>{{ task.trangThai ? "Đã hoàn thành" : " Chưa hoàn thành" }}</td>
       <td>
         <!-- <button class="btn btn-primary mr-2">Thêm</button> -->
-        <button class="btn btn-success mr-2" (click)="onEditTask(template,task)">Sửa</button>
+        <button
+          class="btn btn-success mr-2"
+          (click)="onEditTask(template, task)"
+        >
+          Sửa
+        </button>
         <button class="btn btn-danger" (click)="onDeleteTask(task)">Xóa</button>
       </td>
     </tr>

@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DuAn } from 'src/app/shared/models/project.model';
 import { CongViec } from 'src/app/shared/models/task.model';
+import { NguoiDung } from '../../core/login/user.model';
+import { ManagerStaffService } from '../manager-staff/manager-staff.service';
 import { ManagerTaskService } from '../manager-task/manager-task.service';
 import { ManagerProjectService } from './manager-project.service';
 
@@ -14,8 +16,9 @@ import { ManagerProjectService } from './manager-project.service';
 })
 export class ManagerProjectComponent implements OnInit {
   projectList: DuAn[] = [];
-  taskListOfProject: CongViec[] =[];
+  taskListOfProject: CongViec[] = [];
   taskList: CongViec[] = [];
+  userList: NguoiDung[] = [];
   closeResult: string;
   idProject: string = null;
   createProjectForm: FormGroup;
@@ -24,6 +27,7 @@ export class ManagerProjectComponent implements OnInit {
 
   constructor(
     private mProjectService: ManagerProjectService,
+    private mStaffService: ManagerStaffService,
     private mTaskService: ManagerTaskService,
     private modalService: BsModalService,
     private fb: FormBuilder
@@ -38,6 +42,11 @@ export class ManagerProjectComponent implements OnInit {
   ngOnInit() {
     this.mProjectService.getProject().then((el) => {
       this.projectList = el;
+    });
+    this.mStaffService.getStaff().then((el) => {
+      this.userList = el.filter((f) => {
+        return f.role === 'nhanvien';
+      });
     });
   }
   // ngDoCheck() {
@@ -84,7 +93,6 @@ export class ManagerProjectComponent implements OnInit {
     this.reLoad();
   }
   onSave() {
-    debugger
     let project: DuAn = {
       ...this.createProjectForm.value,
       CongViecs: this.taskListOfProject,
