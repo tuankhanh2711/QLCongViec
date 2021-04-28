@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AdminService } from '../../admin/admin.service';
+import { ManagerStaffService } from '../../admin/manager-staff/manager-staff.service';
 import { NguoiDung } from './user.model';
 
 // export const DATA_USER = [
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private FormBuilder: FormBuilder,
     private router: Router,
-    private adminService: AdminService
+    private mStaffService: ManagerStaffService
   ) {
     this.loginForm = this.FormBuilder.group({
       tenDangNhap: this.FormBuilder.control('', [Validators.required]),
@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
   }
   ngOnInit() {
     localStorage.removeItem('id');
-    this.adminService.getStaff().then((el) => {
+    this.mStaffService.getStaff().then((el) => {
       this.userList = el;
     });
   }
@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/quan-ly']);
       }
       if (role === 'nhanvien') {
-        // this.adminService.getidUser(this.loginForm.controls.id.value);
+        // this.mStaffService.getidUser(this.loginForm.controls.id.value);
         this.router.navigate(['/nhan-vien']);
         localStorage.setItem('id', this.userid);
       }

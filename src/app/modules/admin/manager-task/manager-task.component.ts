@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CongViec } from 'src/app/shared/models/task.model';
-import { AdminService } from '../admin.service';
+import { ManagerTaskService } from './manager-task.service';
 
 @Component({
   selector: 'app-manager-task',
@@ -15,7 +15,7 @@ export class ManagerTaskComponent implements OnInit {
   modalRef: BsModalRef;
   isEdited: boolean = false;
   constructor(
-    private adminService: AdminService,
+    private mTaskService: ManagerTaskService,
     private modalService: BsModalService,
     private fb: FormBuilder
   ) {
@@ -27,7 +27,7 @@ export class ManagerTaskComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this.adminService.getTask().then((el) => {
+    this.mTaskService.getTask().then((el) => {
       this.TaskList = el;
     });
   }
@@ -40,11 +40,13 @@ export class ManagerTaskComponent implements OnInit {
       return;
     }
     if (this.isEdited == true) {
-      this.adminService.editTask(this.createTaskForm.value);
+      this.mTaskService.editTask(this.createTaskForm.value);
       this.onClose();
+      this.reLoad();
     } else {
-      this.adminService.addTask(this.createTaskForm.value);
+      this.mTaskService.addTask(this.createTaskForm.value);
       this.onClose();
+      this.reLoad();
     }
   }
   onEditTask(template: TemplateRef<any>, task: CongViec) {
@@ -56,7 +58,11 @@ export class ManagerTaskComponent implements OnInit {
     this.createTaskForm.controls.nguoiDungId.setValue(task.nguoiDungId);
   }
   onDeleteTask(task: CongViec) {
-    this.adminService.deleteTask(task.id);
+    this.mTaskService.deleteTask(task.id);
+    this.reLoad();
+  }
+  reLoad() {
+    window.location.reload();
   }
   onClose() {
     this.modalRef.hide();

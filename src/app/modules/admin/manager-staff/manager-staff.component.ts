@@ -1,9 +1,9 @@
 import { NguoiDung } from './../../core/login/user.model';
 // import { DATA_USER } from './../../core/login/login.component';
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { AdminService } from '../admin.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ManagerStaffService } from './manager-staff.service';
 
 @Component({
   selector: 'app-manager-staff',
@@ -19,7 +19,7 @@ export class ManagerStaffComponent implements OnInit {
   isEdited: boolean = false;
 
   constructor(
-    private adminService: AdminService,
+    private mStaffService: ManagerStaffService,
     private fb: FormBuilder,
     private modalService: BsModalService
   ) {
@@ -46,29 +46,33 @@ export class ManagerStaffComponent implements OnInit {
   // }
 
   showListStaff() {
-    this.adminService.getStaff().then((el) => {
+    this.mStaffService.getStaff().then((el) => {
       this.staffList = el.filter((f) => {
         return f.role === this.staffRole;
       });
     });
   }
+
   onSave() {
     if (this.createUserForm.invalid) {
       return;
     }
     if (this.isEdited == true) {
-      this.adminService.editStaff(this.createUserForm.value);
+      this.mStaffService.editStaff(this.createUserForm.value);
       this.onClose();
+      this.reLoad();
     } else {
-      this.adminService.addStaff(this.createUserForm.value);
+      this.mStaffService.addStaff(this.createUserForm.value);
       this.onClose();
+      this.reLoad();
     }
   }
   onAddStaff(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
   onDeleteStaff(staff: NguoiDung) {
-    this.adminService.deleteStaff(staff.id);
+    this.mStaffService.deleteStaff(staff.id);
+    this.reLoad();
   }
 
   onEditStaff(template: TemplateRef<any>, staff: NguoiDung) {
@@ -79,6 +83,9 @@ export class ManagerStaffComponent implements OnInit {
     this.createUserForm.controls.tenDangNhap.setValue(staff.tenDangNhap);
     this.createUserForm.controls.matKhau.setValue(staff.matKhau);
     this.createUserForm.controls.role.setValue(staff.role);
+  }
+  reLoad() {
+    window.location.reload();
   }
   onClose() {
     this.isEdited = false;
