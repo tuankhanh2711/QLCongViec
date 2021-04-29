@@ -5,15 +5,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminComponent } from './admin.component';
 import { ManagerProjectComponent } from './manager-project/manager-project.component';
-import { ManagerStaffComponent } from './manager-staff/manager-staff.component';
 import { AdminService } from './admin.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ManagerStaffModule } from './manager-staff/manager-staff.module';
 
 @NgModule({
-  imports: [CommonModule, AdminRoutingModule, SharedModule, HttpClientModule],
+  imports: [CommonModule, AdminRoutingModule, SharedModule, HttpClientModule, ManagerStaffModule],
   declarations: [
     AdminComponent,
-    ManagerStaffComponent,
     ManagerProjectComponent,
     ManagerTaskComponent,
   ],

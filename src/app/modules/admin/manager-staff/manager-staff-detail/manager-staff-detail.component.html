@@ -1,0 +1,55 @@
+<p>
+  manager-staff-detail works!
+</p>
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Thêm nhân viên</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="onClose()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form action="" [formGroup]="createUserForm">
+      <div class="form-group">
+        <label for="">Tên nhân viên</label>
+        <input
+          type="text"
+          formControlName="tenNguoiDung"
+          class="form-control"
+        />
+      </div>
+      <div class="form-group">
+        <label for="">Tên tài khoản</label>
+        <input type="text" formControlName="tenDangNhap" class="form-control"  />
+      </div>
+      <div class="form-group">
+        <label for="">Mật khẩu</label>  
+        <input type="text" formControlName="matKhau" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="">Quyền</label>
+        <select
+          class="form-control"
+          formControlName="role"
+          id="exampleFormControlSelect1"
+        >
+          <option value="nhanvien">nhân viên</option>
+          <option value="quanly">quản lý</option>
+        </select>
+      </div>
+    </form>
+    <div class="group-but offset-8">
+      <button class="btn btn-primary mr-2" (click)="onSave()">Lưu</button>
+      <button class="btn btn-danger" (click)="onClose()">
+        Hủy bỏ
+      </button>
+    </div>
+  </div>
+</ng-template>

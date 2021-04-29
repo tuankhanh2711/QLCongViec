@@ -1,9 +1,10 @@
 import { NguoiDung } from './../../core/login/user.model';
 // import { DATA_USER } from './../../core/login/login.component';
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ManagerStaffService } from './manager-staff.service';
+import { ManagerStaffDetailComponent } from './manager-staff-detail/manager-staff-detail.component';
 
 @Component({
   selector: 'app-manager-staff',
@@ -17,23 +18,11 @@ export class ManagerStaffComponent implements OnInit {
   createUserForm: FormGroup;
   modalRef: BsModalRef;
   isEdited: boolean = false;
-
+  @ViewChild(ManagerStaffDetailComponent) detailComponent:ManagerStaffDetailComponent;
   constructor(
     private mStaffService: ManagerStaffService,
-    private fb: FormBuilder,
     private modalService: BsModalService
-  ) {
-    this.createUserForm = this.fb.group({
-      id: this.fb.control(0),
-      tenNguoiDung: this.fb.control({ value: '', disabled: this.isEdited }, [
-        Validators.required,
-      ]),
-      // [{value: null, disabled: this.isDisabled},
-      tenDangNhap: this.fb.control('', [Validators.required]),
-      matKhau: this.fb.control('', [Validators.required]),
-      role: this.fb.control('', [Validators.required]),
-    });
-  }
+  ) {}
 
   ngOnInit() {
     this.showListStaff();
@@ -46,6 +35,7 @@ export class ManagerStaffComponent implements OnInit {
   // }
 
   showListStaff() {
+    alert('reload');
     this.mStaffService.getStaff().then((el) => {
       this.staffList = el.filter((f) => {
         return f.role === this.staffRole;
@@ -53,22 +43,22 @@ export class ManagerStaffComponent implements OnInit {
     });
   }
 
-  onSave() {
-    if (this.createUserForm.invalid) {
-      return;
-    }
-    if (this.isEdited == true) {
-      this.mStaffService.editStaff(this.createUserForm.value);
-      this.onClose();
-      this.reLoad();
-    } else {
-      this.mStaffService.addStaff(this.createUserForm.value);
-      this.onClose();
-      this.reLoad();
-    }
-  }
-  onAddStaff(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
+  // onSave() {
+  //   if (this.createUserForm.invalid) {
+  //     return;
+  //   }
+  //   if (this.isEdited == true) {
+  //     this.mStaffService.editStaff(this.createUserForm.value);
+  //     this.onClose();
+  //     this.reLoad();
+  //   } else {
+  //     this.mStaffService.addStaff(this.createUserForm.value);
+  //     this.onClose();
+  //     this.reLoad();
+  //   }
+  // }
+  onAddStaff() {
+    this.detailComponent.onOpenModal();
   }
   onDeleteStaff(staff: NguoiDung) {
     this.mStaffService.deleteStaff(staff.id);
@@ -87,6 +77,10 @@ export class ManagerStaffComponent implements OnInit {
   reLoad() {
     window.location.reload();
   }
+  reloadData(result){
+    if(result)
+    this.showListStaff();
+  }
   onClose() {
     this.isEdited = false;
     this.modalRef.hide();
@@ -99,4 +93,5 @@ export class ManagerStaffComponent implements OnInit {
     this.createUserForm.controls.matKhau.setValue('');
     this.createUserForm.controls.role.setValue('');
   }
+  
 }

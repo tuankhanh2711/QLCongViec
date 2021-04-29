@@ -126,6 +126,6 @@ export class ManagerProjectComponent implements OnInit {
   resetForm() {
     this.createProjectForm.controls.id.setValue(0);
     this.createProjectForm.controls.tenDuAn.setValue('');
-    this.taskListOfProject = null;
+    this.taskListOfProject = [];
   }
 }

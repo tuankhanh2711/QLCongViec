@@ -7,7 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminComponent implements OnInit {
   step: number = 0;
-  constructor() {}
-
+  constructor() {
+    var activeTab = localStorage.getItem("activeItem");
+    if(activeTab!== undefined && activeTab !== null && activeTab !== "")
+    {
+      this.step = Number(activeTab);
+    }
+  }
+  changeTab(index){
+    this.step = index;
+    localStorage.setItem("activeItem",index);
+  }
   ngOnInit() {}
 }

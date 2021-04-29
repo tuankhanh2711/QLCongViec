@@ -17,6 +17,7 @@ export class ManagerStaffService {
       });
   }
   addStaff(user: NguoiDung) {
+    debugger
     return this.http
       .post(this.adminService.baseURL + 'NguoiDung', user)
       .toPromise()
