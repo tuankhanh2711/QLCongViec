@@ -1,3 +1,4 @@
+import { ManagerTaskModule } from './manager-task/manager-task.module';
 import { SharedModule } from './../../shared/shared/shared.module';
 import { ManagerTaskComponent } from './manager-task/manager-task.component';
 import { AdminRoutingModule } from './admin-routing.module';
@@ -8,14 +9,19 @@ import { ManagerProjectComponent } from './manager-project/manager-project.compo
 import { AdminService } from './admin.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ManagerStaffModule } from './manager-staff/manager-staff.module';
+import { ManagerProjectModule } from './manager-project/manager-project.module';
 
 @NgModule({
-  imports: [CommonModule, AdminRoutingModule, SharedModule, HttpClientModule, ManagerStaffModule],
-  declarations: [
-    AdminComponent,
-    ManagerProjectComponent,
-    ManagerTaskComponent,
+  imports: [
+    CommonModule,
+    AdminRoutingModule,
+    SharedModule,
+    HttpClientModule,
+    ManagerStaffModule,
+    ManagerTaskModule,
+    ManagerProjectModule,
   ],
-  providers:[AdminService, HttpClient]
+  declarations: [AdminComponent],
+  providers: [AdminService, HttpClient],
 })
 export class AdminModule {}

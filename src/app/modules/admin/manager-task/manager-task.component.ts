@@ -1,11 +1,6 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { DuAn } from 'src/app/shared/models/project.model';
+import { ManagerTaskDetailComponent } from './manager-task-detail/manager-task-detail.component';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CongViec } from 'src/app/shared/models/task.model';
-import { NguoiDung } from '../../core/login/user.model';
-import { ManagerProjectService } from '../manager-project/manager-project.service';
-import { ManagerStaffService } from '../manager-staff/manager-staff.service';
 import { ManagerTaskService } from './manager-task.service';
 
 @Component({
@@ -15,79 +10,31 @@ import { ManagerTaskService } from './manager-task.service';
 })
 export class ManagerTaskComponent implements OnInit {
   TaskList: CongViec[] = [];
-  userList: NguoiDung[] = [];
-  projectList: DuAn[] = [];
-  createTaskForm: FormGroup;
-  modalRef: BsModalRef;
-  isEdited: boolean = false;
-  constructor(
-    private mTaskService: ManagerTaskService,
-    private mProjectService: ManagerProjectService,
-    private mStaffService: ManagerStaffService,
-    private modalService: BsModalService,
-    private fb: FormBuilder
-  ) {
-    this.createTaskForm = this.fb.group({
-      id: this.fb.control(0),
-      noiDung: this.fb.control(''),
-      duAnId: this.fb.control(null),
-      nguoiDungId: this.fb.control(null),
-    });
-  }
+  @ViewChild(ManagerTaskDetailComponent)
+  detailComponent: ManagerTaskDetailComponent;
+
+  constructor(private mTaskService: ManagerTaskService) {}
   ngOnInit() {
+    this.showListTask();
+  }
+
+  onAddTask() {
+    this.detailComponent.onOpenModal();
+  }
+
+  onEditTask(id: number) {
+    this.detailComponent.editTask(id);
+  }
+  onDeleteTask(id: number) {
+    this.detailComponent.deleteTask(id);
+  }
+  showListTask() {
+    alert();
     this.mTaskService.getTask().then((el) => {
       this.TaskList = el;
     });
-    this.mStaffService.getStaff().then((el) => {
-      this.userList = el.filter((f) => {
-        return f.role === 'nhanvien';
-      });
-    });
-    this.mProjectService.getProject().then((el) => {
-      this.projectList = el;
-    });
   }
-
-  onAddTask(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
-  }
-  onSave() {
-    if (this.createTaskForm.invalid) {
-      return;
-    }
-    if (this.isEdited == true) {
-      this.mTaskService.editTask(this.createTaskForm.value);
-      this.onClose();
-      this.reLoad();
-    } else {
-      this.mTaskService.addTask(this.createTaskForm.value);
-      this.onClose();
-      this.reLoad();
-    }
-  }
-  onEditTask(template: TemplateRef<any>, task: CongViec) {
-    this.isEdited = true;
-    this.modalRef = this.modalService.show(template);
-    this.createTaskForm.controls.id.setValue(task.id);
-    this.createTaskForm.controls.noiDung.setValue(task.noiDung);
-    this.createTaskForm.controls.duAnId.setValue(task.duAnId);
-    this.createTaskForm.controls.nguoiDungId.setValue(task.nguoiDungId);
-  }
-  onDeleteTask(task: CongViec) {
-    this.mTaskService.deleteTask(task.id);
-    this.reLoad();
-  }
-  reLoad() {
-    window.location.reload();
-  }
-  onClose() {
-    this.modalRef.hide();
-    this.resetForm();
-  }
-  resetForm() {
-    this.createTaskForm.controls.id.setValue(0);
-    this.createTaskForm.controls.noiDung.setValue('');
-    this.createTaskForm.controls.duAnId.setValue(null);
-    this.createTaskForm.controls.nguoiDungId.setValue(null);
+  reloadData(result) {
+    if (result) this.showListTask();
   }
 }

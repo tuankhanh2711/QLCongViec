@@ -1,8 +1,6 @@
 import { NguoiDung } from './../../core/login/user.model';
 // import { DATA_USER } from './../../core/login/login.component';
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ManagerStaffService } from './manager-staff.service';
 import { ManagerStaffDetailComponent } from './manager-staff-detail/manager-staff-detail.component';
 
@@ -15,24 +13,13 @@ export class ManagerStaffComponent implements OnInit {
   staffList: NguoiDung[] = [];
   staffRole: string = 'nhanvien';
   closeResult: string;
-  createUserForm: FormGroup;
-  modalRef: BsModalRef;
-  isEdited: boolean = false;
-  @ViewChild(ManagerStaffDetailComponent) detailComponent:ManagerStaffDetailComponent;
-  constructor(
-    private mStaffService: ManagerStaffService,
-    private modalService: BsModalService
-  ) {}
+  @ViewChild(ManagerStaffDetailComponent)
+  detailComponent: ManagerStaffDetailComponent;
+  constructor(private mStaffService: ManagerStaffService) {}
 
   ngOnInit() {
     this.showListStaff();
   }
-
-  // showListStaff() {
-  //   this.staffList = DATA_USER.filter((ele) => {
-  //     return ele.role === this.staffRole;
-  //   });
-  // }
 
   showListStaff() {
     alert('reload');
@@ -42,56 +29,17 @@ export class ManagerStaffComponent implements OnInit {
       });
     });
   }
-
-  // onSave() {
-  //   if (this.createUserForm.invalid) {
-  //     return;
-  //   }
-  //   if (this.isEdited == true) {
-  //     this.mStaffService.editStaff(this.createUserForm.value);
-  //     this.onClose();
-  //     this.reLoad();
-  //   } else {
-  //     this.mStaffService.addStaff(this.createUserForm.value);
-  //     this.onClose();
-  //     this.reLoad();
-  //   }
-  // }
   onAddStaff() {
     this.detailComponent.onOpenModal();
   }
-  onDeleteStaff(staff: NguoiDung) {
-    this.mStaffService.deleteStaff(staff.id);
-    this.reLoad();
+  onDeleteStaff(id: number) {
+    this.detailComponent.deleteStaff(id);
   }
 
-  onEditStaff(template: TemplateRef<any>, staff: NguoiDung) {
-    this.isEdited = true;
-    this.modalRef = this.modalService.show(template);
-    this.createUserForm.controls.id.setValue(staff.id);
-    this.createUserForm.controls.tenNguoiDung.setValue(staff.tenNguoiDung);
-    this.createUserForm.controls.tenDangNhap.setValue(staff.tenDangNhap);
-    this.createUserForm.controls.matKhau.setValue(staff.matKhau);
-    this.createUserForm.controls.role.setValue(staff.role);
+  onEditStaff(id: number) {
+    this.detailComponent.editStaff(id);
   }
-  reLoad() {
-    window.location.reload();
+  reloadData(result) {
+    if (result) this.showListStaff();
   }
-  reloadData(result){
-    if(result)
-    this.showListStaff();
-  }
-  onClose() {
-    this.isEdited = false;
-    this.modalRef.hide();
-    this.resetForm();
-  }
-  resetForm() {
-    this.createUserForm.controls.id.setValue(0);
-    this.createUserForm.controls.tenNguoiDung.setValue('');
-    this.createUserForm.controls.tenDangNhap.setValue('');
-    this.createUserForm.controls.matKhau.setValue('');
-    this.createUserForm.controls.role.setValue('');
-  }
-  
 }

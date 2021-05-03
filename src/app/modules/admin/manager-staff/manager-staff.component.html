@@ -1,7 +1,5 @@
-<app-manager-staff-detail
-  [reloadFunction]="showListStaff"
-  (callBackEventEmitter)="reloadData($event)"
-></app-manager-staff-detail>
+<app-manager-staff-detail [reloadFunction]="showListStaff" (callBackEventEmitter)="reloadData($event)">
+</app-manager-staff-detail>
 
 <!-- <button
   type="button"
@@ -60,11 +58,7 @@
   </div>
 </ng-template> -->
 <div>
-  <button
-    type="button"
-    class="btn btn-primary offset-10 mb-3"
-    (click)="onAddStaff()"
-  >
+  <button type="button" class="btn btn-primary offset-10 mb-3" (click)="onAddStaff()">
     Thêm nhân viên +
   </button>
 </div>
@@ -83,13 +77,10 @@
       <td>{{ staff.tenNguoiDung }}</td>
       <td>{{ staff.tenDangNhap }}</td>
       <td>
-        <button
-          class="btn btn-success mr-2"
-          (click)="onEditStaff(template, staff)"
-        >
+        <button class="btn btn-success mr-2" (click)="onEditStaff(staff.id)">
           Sửa
         </button>
-        <button class="btn btn-danger" (click)="onDeleteStaff(staff)">
+        <button class="btn btn-danger" (click)="onDeleteStaff(staff.id)">
           Xóa
         </button>
       </td>

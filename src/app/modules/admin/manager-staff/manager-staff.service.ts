@@ -16,6 +16,14 @@ export class ManagerStaffService {
         return res as NguoiDung[];
       });
   }
+  getProfileSingleStaffById(id: number){
+    return this.http
+      .get(this.adminService.baseURL + 'NguoiDung/' + id)
+      .toPromise()
+      .then((res) => {
+        return res as NguoiDung;
+      });
+  }
   addStaff(user: NguoiDung) {
     debugger
     return this.http

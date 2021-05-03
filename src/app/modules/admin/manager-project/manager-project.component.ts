@@ -1,12 +1,8 @@
-import { Component, DoCheck, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DuAn } from 'src/app/shared/models/project.model';
 import { CongViec } from 'src/app/shared/models/task.model';
-import { NguoiDung } from '../../core/login/user.model';
-import { ManagerStaffService } from '../manager-staff/manager-staff.service';
-import { ManagerTaskService } from '../manager-task/manager-task.service';
+import { ManagerProjectDetailComponent } from './manager-project-detail/manager-project-detail.component';
+import { ManagerProjectFuncComponent } from './manager-project-func/manager-project-func.component';
 import { ManagerProjectService } from './manager-project.service';
 
 @Component({
@@ -16,38 +12,18 @@ import { ManagerProjectService } from './manager-project.service';
 })
 export class ManagerProjectComponent implements OnInit {
   projectList: DuAn[] = [];
-  taskListOfProject: CongViec[] = [];
   taskList: CongViec[] = [];
-  userList: NguoiDung[] = [];
   closeResult: string;
   idProject: string = null;
-  createProjectForm: FormGroup;
-  modalRef: BsModalRef;
-  isEdited: boolean = false;
+  @ViewChild(ManagerProjectFuncComponent)
+  funcProjectComponont: ManagerProjectFuncComponent;
+  @ViewChild(ManagerProjectDetailComponent)
+  detailComponent: ManagerProjectDetailComponent;
 
-  constructor(
-    private mProjectService: ManagerProjectService,
-    private mStaffService: ManagerStaffService,
-    private mTaskService: ManagerTaskService,
-    private modalService: BsModalService,
-    private fb: FormBuilder
-  ) {
-    this.createProjectForm = this.fb.group({
-      id: this.fb.control(0),
-      tenDuAn: this.fb.control('', [Validators.required]),
-      trangThai: this.fb.control(null, [Validators.required]),
-    });
-  }
+  constructor(private mProjectService: ManagerProjectService) {}
 
   ngOnInit() {
-    this.mProjectService.getProject().then((el) => {
-      this.projectList = el;
-    });
-    this.mStaffService.getStaff().then((el) => {
-      this.userList = el.filter((f) => {
-        return f.role === 'nhanvien';
-      });
-    });
+    this.showListProject();
   }
   // ngDoCheck() {
   //   if (this.idProject === null) {
@@ -60,72 +36,29 @@ export class ManagerProjectComponent implements OnInit {
   //     });
   // }
 
-  onAddProject(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
+  onAddProject() {
+    this.funcProjectComponont.onOpenModal();
   }
-  onShowDetail(template: TemplateRef<any>, project: DuAn) {
-    this.modalRef = this.modalService.show(template);
-    this.onViewTaskByIdProject(project);
-  }
-  onAddTask() {
-    this.taskListOfProject.push({
-      id: 0,
-      noiDung: '',
-      nguoiDungId: null,
-      trangThai: true,
-      duAnId: this.createProjectForm.controls.id.value,
+  showListProject() {
+    alert();
+    this.mProjectService.getProject().then((el) => {
+      this.projectList = el;
     });
   }
-  onEditProject(template: TemplateRef<any>, project: DuAn) {
-    this.isEdited = true;
-    this.modalRef = this.modalService.show(template);
-    this.createProjectForm.controls.id.setValue(project.id);
-    this.createProjectForm.controls.tenDuAn.setValue(project.tenDuAn);
-    this.createProjectForm.controls.trangThai.setValue(project.trangThai);
-    if (project.congViecs == null) {
-      this.taskListOfProject = [];
-    } else {
-      this.taskListOfProject = project.congViecs;
-    }
+  onShowDetail(id: number) {
+    this.detailComponent.onOpenModalDetail(id);
   }
-  onDeleteProject(project: DuAn) {
-    this.mProjectService.deleteProject(project.id);
-    this.reLoad();
+
+  onEditProject(id: number) {
+    this.funcProjectComponont.editProject(id);
   }
-  onSave() {
-    let project: DuAn = {
-      ...this.createProjectForm.value,
-      CongViecs: this.taskListOfProject,
-    };
-    if (this.createProjectForm.invalid) {
-      return;
-    }
-    if (this.isEdited == true) {
-      this.mProjectService.editProject(project);
-      this.onClose();
-      this.reLoad();
-    } else {
-      this.mProjectService.addProject(project);
-      this.onClose();
-      this.reLoad();
-    }
+  onViewTaskByIdProject(id: number) {
+    // this.funcProjectComponont.onOpenModalDetail();
   }
-  onViewTaskByIdProject(project: DuAn) {
-    this.idProject = project.id.toString();
-    this.mTaskService.getTaskByProject(this.idProject).then((el) => {
-      this.taskList = el;
-    });
+  onDeleteProject(id: number) {
+    this.funcProjectComponont.deleteProject(id);
   }
-  reLoad() {
-    window.location.reload();
-  }
-  onClose() {
-    this.modalRef.hide();
-    this.resetForm();
-  }
-  resetForm() {
-    this.createProjectForm.controls.id.setValue(0);
-    this.createProjectForm.controls.tenDuAn.setValue('');
-    this.taskListOfProject = [];
+  reloadData(result) {
+    if (result) this.showListProject();
   }
 }

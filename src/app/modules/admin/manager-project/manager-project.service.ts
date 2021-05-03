@@ -16,6 +16,14 @@ export class ManagerProjectService {
         return res as DuAn[];
       });
   }
+  getSingleProject(id: number) {
+    return this.http
+      .get(this.adminService.baseURL + 'DuAn/' + id)
+      .toPromise()
+      .then((res) => {
+        return res as DuAn;
+      });
+  }
   addProject(project: DuAn) {
     debugger;
     return this.http

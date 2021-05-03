@@ -1,62 +1,7 @@
-<button
-  type="button"
-  class="btn btn-primary offset-10 mb-3"
-  (click)="onAddTask(template)"
->
-  Thên công việc +
+<app-manager-task-detail (callBackEventEmitter)="reloadData($event)"></app-manager-task-detail>
+<button type="button" class="btn btn-primary offset-10 mb-3" (click)="onAddTask()">
+  Thêm công việc +
 </button>
-
-<ng-template #template>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Thêm công việc</h4>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="onClose()"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form action="" [formGroup]="createTaskForm">
-      <div class="form-group">
-        <label for="">Tên công việc</label>
-        <input type="text" formControlName="noiDung" class="form-control" />
-      </div>
-      <div class="form-group">
-        <label for="">Công việc thuộc dự án</label>
-        <!-- <input type="text" formControlName="duAnId" class="form-control" /> -->
-        <select
-          class="form-control"
-          id="exampleFormControlSelect1"
-          formControlName="duAnId"
-        >
-          <option *ngFor="let pro of projectList" [ngValue]="pro.id">
-            {{ pro.tenDuAn }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="">Nhân viên đảm nhận</label>
-        <!-- <input type="text" formControlName="nguoiDungId" class="form-control" /> -->
-        <select
-          class="form-control"
-          id="exampleFormControlSelect2"
-          formControlName="nguoiDungId"
-        >
-          <option *ngFor="let item of userList" [ngValue]="item.id">
-            {{ item.tenNguoiDung }}
-          </option>
-        </select>
-      </div>
-    </form>
-    <div class="group-but offset-8">
-      <button class="btn btn-primary mr-2" (click)="onSave()">Lưu</button>
-      <button class="btn btn-danger" (click)="onClose()">Hủy bỏ</button>
-    </div>
-  </div>
-</ng-template>
 <table class="table">
   <thead>
     <tr>
@@ -73,13 +18,10 @@
       <td>{{ task.trangThai ? "Đã hoàn thành" : " Chưa hoàn thành" }}</td>
       <td>
         <!-- <button class="btn btn-primary mr-2">Thêm</button> -->
-        <button
-          class="btn btn-success mr-2"
-          (click)="onEditTask(template, task)"
-        >
+        <button class="btn btn-success mr-2" (click)="onEditTask(task.id)">
           Sửa
         </button>
-        <button class="btn btn-danger" (click)="onDeleteTask(task)">Xóa</button>
+        <button class="btn btn-danger" (click)="onDeleteTask(task.id)">Xóa</button>
       </td>
     </tr>
   </tbody>

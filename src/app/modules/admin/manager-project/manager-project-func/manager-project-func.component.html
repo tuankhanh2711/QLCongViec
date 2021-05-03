@@ -1,0 +1,56 @@
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Thêm dự án</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="onClose()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form action="" [formGroup]="createProjectForm">
+      <div class="form-group">
+        <label for="">Tên dự án</label>
+        <input type="text" formControlName="tenDuAn" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="">Trạng thái</label>
+        <select class="form-control" formControlName="trangThai" id="exampleFormControlSelect1">
+          <option [ngValue]="true">Hoàn thành</option>
+          <option [ngValue]="false">Chưa hoàn thành</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" (click)="onAddTask()">
+        Thêm công việc +
+      </button>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Tên công việc</th>
+            <th scope="col">Nhân viên đảm nhiệm</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let task of taskListOfProject">
+            <th scope="col">
+              <input type="text" class="form-control" [(ngModel)]="task.noiDung"
+                [ngModelOptions]="{ standalone: true }" />
+              <ng-template #noiDungTemplate>{{ task?.noiDung }}</ng-template>
+            </th>
+            <th scope="col">
+              <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="task.nguoiDungId"
+                [ngModelOptions]="{ standalone: true }">
+                <option *ngFor="let item of userList" [ngValue]="item.id">
+                  {{ item.tenNguoiDung }}
+                </option>
+              </select>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+    <div class="group-but offset-8">
+      <button class="btn btn-primary mr-2" (click)="onSave()">Lưu</button>
+      <button class="btn btn-danger" (click)="onClose()">Hủy bỏ</button>
+    </div>
+  </div>
+</ng-template>

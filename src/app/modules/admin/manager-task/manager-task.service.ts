@@ -17,6 +17,14 @@ export class ManagerTaskService {
         return res as CongViec[];
       });
   }
+  getSingleTask(id: number) {
+    return this.http
+      .get(this.adminService.baseURL + 'CongViec/' + id)
+      .toPromise()
+      .then((res) => {
+        return res as CongViec;
+      });
+  }
   addTask(task: CongViec) {
     return this.http
       .post(this.adminService.baseURL + 'CongViec', task)
@@ -38,7 +46,7 @@ export class ManagerTaskService {
       .delete(this.adminService.baseURL + 'CongViec/' + id)
       .toPromise();
   }
-  getTaskByProject(id: string) {
+  getTaskByProject(id: number) {
     return this.http
       .get(this.adminService.baseURL + 'CongViec/GetCongViecByDuAnId/' + id)
       .toPromise()

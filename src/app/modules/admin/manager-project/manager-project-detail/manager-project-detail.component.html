@@ -1,0 +1,39 @@
+<ng-template #detail>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Thông tin dự án</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="onClose()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Tên công việc</th>
+          <th scope="col">Nhân viên đảm nhiệm</th>
+          <th scope="col">Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cv of taskList; let i = index">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ cv?.noiDung }}</td>
+          <td>{{ cv?.nguoiDungId }}</td>
+          <td>{{ cv?.trangThai ? "Đã hoàn thành" : " Chưa hoàn thành" }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="group-but offset-8">
+      <button class="btn btn-danger" (click)="onClose()">Đóng</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- <div class="col-4 offset-3">
+  <select class="form-control mt-5" id="exampleFormControlSelect1">
+    <option *ngFor="let item of userList" (value)="(item.id)">
+      {{ item.tenNguoiDung }}
+    </option>
+  </select>
+</div> -->
