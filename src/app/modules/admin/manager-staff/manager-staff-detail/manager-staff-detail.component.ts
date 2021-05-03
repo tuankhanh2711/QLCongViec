@@ -51,18 +51,7 @@ export class ManagerStaffDetailComponent implements OnInit {
     this.showSingleUser(id);
     this.onOpenModal();
   }
-  deleteStaff(id: number) {
-    this.mStaffService
-      .deleteStaff(id)
-      .then(() => {
-        this.callBackEventEmitter.emit(true);
-        this.notifyService.showSuccess('Xóa thành công !!', 'Success');
-      })
-      .catch(() => {
-        this.callBackEventEmitter.emit(false);
-        this.notifyService.showError('Xóa thất bại !!', 'Error');
-      });
-  }
+  
   onSave() {
     if (this.createUserForm.invalid) {
       return;

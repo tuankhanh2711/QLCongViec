@@ -3,6 +3,7 @@ import { NguoiDung } from './../../core/login/user.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ManagerStaffService } from './manager-staff.service';
 import { ManagerStaffDetailComponent } from './manager-staff-detail/manager-staff-detail.component';
+import { DeleteConfirmComponent } from './delete-confirm/delete-confirm.component';
 
 @Component({
   selector: 'app-manager-staff',
@@ -15,6 +16,9 @@ export class ManagerStaffComponent implements OnInit {
   closeResult: string;
   @ViewChild(ManagerStaffDetailComponent)
   detailComponent: ManagerStaffDetailComponent;
+  @ViewChild(DeleteConfirmComponent)
+  deleteConfirm: DeleteConfirmComponent;
+
   constructor(private mStaffService: ManagerStaffService) {}
 
   ngOnInit() {
@@ -33,7 +37,7 @@ export class ManagerStaffComponent implements OnInit {
     this.detailComponent.onOpenModal();
   }
   onDeleteStaff(id: number) {
-    this.detailComponent.deleteStaff(id);
+    this.deleteConfirm.onOpenModalConfirmDelete(id);
   }
 
   onEditStaff(id: number) {

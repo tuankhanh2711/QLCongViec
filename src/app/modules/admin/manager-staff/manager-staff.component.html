@@ -1,6 +1,8 @@
 <app-manager-staff-detail [reloadFunction]="showListStaff" (callBackEventEmitter)="reloadData($event)">
 </app-manager-staff-detail>
 
+<app-delete-confirm (callBackEventEmitter)="reloadData($event)"></app-delete-confirm>
+
 <!-- <button
   type="button"
   class="btn btn-primary offset-10 mb-3"

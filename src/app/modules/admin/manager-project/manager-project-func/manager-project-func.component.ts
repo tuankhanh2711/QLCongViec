@@ -13,7 +13,6 @@ import { CongViec } from 'src/app/shared/models/task.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ManagerProjectService } from '../manager-project.service';
 import { ManagerStaffService } from '../../manager-staff/manager-staff.service';
-import { ManagerTaskService } from '../../manager-task/manager-task.service';
 import { DuAn } from 'src/app/shared/models/project.model';
 
 @Component({
