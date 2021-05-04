@@ -21,6 +21,14 @@ export class StaffService {
         return res as CongViec[];
       });
   }
+  getSingleTask(id: number) {
+    return this.http
+      .get(this.baseURL + 'CongViec/' + id)
+      .toPromise()
+      .then((res) => {
+        return res as CongViec;
+      });
+  }
   getProfileUser(id: number) {
     return this.http
       .get(this.baseURL + 'NguoiDung/' + id)
@@ -30,6 +38,7 @@ export class StaffService {
       });
   }
   editTaskbyStaff(task: CongViec) {
+    debugger;
     return this.http
       .put(this.baseURL + 'CongViec/' + task.id, task)
       .toPromise()

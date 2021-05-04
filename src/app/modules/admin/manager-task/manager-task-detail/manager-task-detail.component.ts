@@ -88,19 +88,6 @@ export class ManagerTaskDetailComponent implements OnInit {
       this.onClose();
     }
   }
-  deleteTask(id: number) {
-    this.mTaskService
-      .deleteTask(id)
-      .then(() => {
-        this.callBackEventEmitter.emit(true);
-        this.notifyService.showSuccess('Xóa thành công !!', 'Success');
-      })
-      .catch(() => {
-        this.callBackEventEmitter.emit(false);
-        this.notifyService.showError('Xóa thất bại !!', 'Error');
-      });
-  }
-
   onOpenModal() {
     this.modalRef = this.modalService.show(this.template);
   }

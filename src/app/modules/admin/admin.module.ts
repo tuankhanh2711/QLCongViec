@@ -5,7 +5,6 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminComponent } from './admin.component';
-import { ManagerProjectComponent } from './manager-project/manager-project.component';
 import { AdminService } from './admin.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ManagerStaffModule } from './manager-staff/manager-staff.module';

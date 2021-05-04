@@ -1,8 +1,7 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CongViec } from 'src/app/shared/models/task.model';
 import { StaffService } from '../staff.service';
+import { TaskSuccessConfirmComponent } from '../task-success-confirm/task-success-confirm.component';
 
 @Component({
   selector: 'app-task-list',
@@ -12,47 +11,54 @@ import { StaffService } from '../staff.service';
 export class TaskListComponent implements OnInit {
   idUser: string;
   taskList: CongViec[] = [];
-  modalRef: BsModalRef;
-  editTaskForm: FormGroup;
-  constructor(
-    private staffService: StaffService,
-    private fb: FormBuilder,
-    private modalService: BsModalService
-  ) {
-    this.editTaskForm = this.fb.group({
-      id: this.fb.control(0),
-      noiDung: this.fb.control(''),
-      duAnId: this.fb.control(0),
-      nguoiDungId: this.fb.control(0),
-      trangThai: this.fb.control(null),
-    });
+  task: CongViec;
+  @ViewChild(TaskSuccessConfirmComponent)
+  successedTaskComponent: TaskSuccessConfirmComponent;
+
+  constructor(private staffService: StaffService) {
+    // this.editTaskForm = this.fb.group({
+    //   id: this.fb.control(0),
+    //   noiDung: this.fb.control(''),
+    //   duAnId: this.fb.control(0),
+    //   nguoiDungId: this.fb.control(0),
+    //   trangThai: this.fb.control(null),
+    // });
   }
 
   ngOnInit() {
     this.idUser = localStorage.getItem('id');
+    this.onShowTaskList();
+  }
+  onShowTaskList() {
+    alert();
     this.staffService.getTaskOfStaff(this.idUser).then((el) => {
       this.taskList = el;
     });
   }
-  onEditTask(template: TemplateRef<any>, task: CongViec) {
-    debugger;
-    this.modalRef = this.modalService.show(template);
-    this.editTaskForm.controls.id.setValue(task.id);
-    this.editTaskForm.controls.noiDung.setValue(task.noiDung);
-    this.editTaskForm.controls.duAnId.setValue(task.duAnId);
-    this.editTaskForm.controls.nguoiDungId.setValue(task.nguoiDungId);
-    this.editTaskForm.controls.trangThai.setValue(task.trangThai);
+  onEditTask(id: number, trangThai:boolean) {
+    this.successedTaskComponent.onOpenModalCorfirmSuccessTask(id, trangThai);
   }
-  onSave() {
-    if (this.editTaskForm.invalid) {
-      return;
-    }
-    this.staffService.editTaskbyStaff(this.editTaskForm.value);
-    this.onClose();
+  editTask(id: number) {
+    this.staffService.getSingleTask(id).then((el) => {
+      if (el.trangThai == true) {
+        el.trangThai = false;
+      } else {
+        el.trangThai = true;
+      }
+      this.task = el;
+      this.staffService.editTaskbyStaff(this.task);
+      this.onShowTaskList();
+      // this.editTaskForm.controls.id.setValue(el.id);
+      // this.editTaskForm.controls.noiDung.setValue(el.noiDung);
+      // this.editTaskForm.controls.duAnId.setValue(el.duAnId);
+      // this.editTaskForm.controls.nguoiDungId.setValue(el.nguoiDungId);
+      // this.editTaskForm.controls.trangThai.setValue(el.trangThai);
+    });
   }
-  onClose() {
-    this.modalRef.hide();
-    this.resetForm();
-  }
-  resetForm() {}
+  // onSave() {
+  //   if (this.editTaskForm.invalid) {
+  //     return;
+  //   }
+  //   this.staffService.editTaskbyStaff(this.editTaskForm.value);
+  // }
 }

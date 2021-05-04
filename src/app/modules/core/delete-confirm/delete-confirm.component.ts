@@ -1,5 +1,4 @@
-import { NotificationService } from './../../../../shared/services/notification.service';
-import { ManagerStaffService } from './../manager-staff.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 import {
   Component,
   EventEmitter,
@@ -20,10 +19,10 @@ export class DeleteConfirmComponent implements OnInit {
   idDelete: number;
   @ViewChild(TemplateRef) template: TemplateRef<any>;
   @Output() callBackEventEmitter = new EventEmitter<boolean>();
+  @Output() agreeDelete = new EventEmitter<number>();
 
   constructor(
     private modalService: BsModalService,
-    private mStaffService: ManagerStaffService,
     private notifyService: NotificationService
   ) {}
 
@@ -33,24 +32,12 @@ export class DeleteConfirmComponent implements OnInit {
     this.idDelete = id;
   }
   onConfirm() {
-    this.deleteStaff(this.idDelete);
+    this.agreeDelete.emit(this.idDelete);
     this.modalService.hide();
   }
   onDecline() {
     this.modalService.hide();
     this.callBackEventEmitter.emit(false);
     this.notifyService.showInfo('Đã hủy !!', 'Thông báo');
-  }
-  deleteStaff(id: number) {
-    this.mStaffService
-      .deleteStaff(id)
-      .then(() => {
-        this.callBackEventEmitter.emit(true);
-        this.notifyService.showSuccess('Xóa thành công !!', 'Success');
-      })
-      .catch(() => {
-        this.callBackEventEmitter.emit(false);
-        this.notifyService.showError('Xóa thất bại !!', 'Error');
-      });
   }
 }

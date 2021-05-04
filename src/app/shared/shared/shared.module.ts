@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { DeleteConfirmComponent } from 'src/app/modules/core/delete-confirm/delete-confirm.component';
 
 @NgModule({
   imports: [
@@ -13,13 +14,14 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     ReactiveFormsModule,
     ModalModule.forRoot(),
   ],
-  declarations: [EditProfileComponent],
+  declarations: [EditProfileComponent,DeleteConfirmComponent],
   exports: [
     CommonModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
     EditProfileComponent,
+    DeleteConfirmComponent,
     ModalModule,
   ],
 })

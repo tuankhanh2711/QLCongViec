@@ -1,4 +1,4 @@
-<ng-template #template>
+<!-- <ng-template #template>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Thông tin công việc</h4>
     <button
@@ -47,12 +47,16 @@
       <button class="btn btn-danger" (click)="onClose()">Hủy bỏ</button>
     </div>
   </div>
-</ng-template>
-<table class="table">
+</ng-template> -->
+<app-task-success-confirm
+  (agreeSuccess)="editTask($event)"
+></app-task-success-confirm>
+<table class="table mt-5">
   <thead>
     <tr>
       <th scope="col">#</th>
       <th scope="col">Tên Công việc</th>
+      <th scope="col">Công việc thuộc dự án</th>
       <th scope="col">Trạng thái</th>
       <th scope="col">Chức năng</th>
     </tr>
@@ -61,16 +65,19 @@
     <tr *ngFor="let task of taskList; let i = index">
       <th scope="row">{{ i + 1 }}</th>
       <td>{{ task.noiDung }}</td>
+      <td>{{ task.duAnId }}</td>
       <td>{{ task.trangThai ? "Đã hoàn thành" : " Chưa hoàn thành" }}</td>
       <td>
         <button
-          class="btn btn-success mr-2"
-          (click)="onEditTask(template, task)"
+          class="btn mr-2"
+          (click)="onEditTask(task.id, task.trangThai)"
+          [class.btn-success]="!task.trangThai"
+          [class.btn-danger]="task.trangThai"
         >
-          Sửa
+          {{ task.trangThai ? "Chưa hoàn thành" : "Hoàn thành" }}
         </button>
-        <button class="btn btn-danger">Xóa</button>
       </td>
     </tr>
   </tbody>
 </table>
+<!-- [ngStyle]="{ 'background-color': task.trangThai ? 'red' : 'blue' }" -->

@@ -1,5 +1,15 @@
-<app-manager-task-detail (callBackEventEmitter)="reloadData($event)"></app-manager-task-detail>
-<button type="button" class="btn btn-primary offset-10 mb-3" (click)="onAddTask()">
+<app-manager-task-detail
+  (callBackEventEmitter)="reloadData($event)"
+></app-manager-task-detail>
+<app-delete-confirm
+  (callBackEventEmitter)="reloadData($event)"
+  (agreeDelete)="deleteTask($event)"
+></app-delete-confirm>
+<button
+  type="button"
+  class="btn btn-primary offset-10 mb-3"
+  (click)="onAddTask()"
+>
   Thêm công việc +
 </button>
 <table class="table">
@@ -21,7 +31,9 @@
         <button class="btn btn-success mr-2" (click)="onEditTask(task.id)">
           Sửa
         </button>
-        <button class="btn btn-danger" (click)="onDeleteTask(task.id)">Xóa</button>
+        <button class="btn btn-danger" (click)="onDeleteTask(task.id)">
+          Xóa
+        </button>
       </td>
     </tr>
   </tbody>

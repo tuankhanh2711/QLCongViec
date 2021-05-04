@@ -1,7 +1,7 @@
 <app-manager-staff-detail [reloadFunction]="showListStaff" (callBackEventEmitter)="reloadData($event)">
 </app-manager-staff-detail>
 
-<app-delete-confirm (callBackEventEmitter)="reloadData($event)"></app-delete-confirm>
+<app-delete-confirm (callBackEventEmitter)="reloadData($event)" (agreeDelete)="deleteStaff($event)"></app-delete-confirm>
 
 <!-- <button
   type="button"

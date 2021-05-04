@@ -11,7 +11,7 @@ export class AdminComponent implements OnInit {
     var activeTab = localStorage.getItem("activeItem");
     if(activeTab!== undefined && activeTab !== null && activeTab !== "")
     {
-      this.step = Number(activeTab);
+      this.step = +activeTab;
     }
   }
   changeTab(index){

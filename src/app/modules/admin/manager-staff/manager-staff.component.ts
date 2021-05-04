@@ -3,7 +3,8 @@ import { NguoiDung } from './../../core/login/user.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ManagerStaffService } from './manager-staff.service';
 import { ManagerStaffDetailComponent } from './manager-staff-detail/manager-staff-detail.component';
-import { DeleteConfirmComponent } from './delete-confirm/delete-confirm.component';
+import { DeleteConfirmComponent } from '../../core/delete-confirm/delete-confirm.component';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 @Component({
   selector: 'app-manager-staff',
@@ -17,9 +18,9 @@ export class ManagerStaffComponent implements OnInit {
   @ViewChild(ManagerStaffDetailComponent)
   detailComponent: ManagerStaffDetailComponent;
   @ViewChild(DeleteConfirmComponent)
-  deleteConfirm: DeleteConfirmComponent;
+  deleteConfirmComponent: DeleteConfirmComponent;
 
-  constructor(private mStaffService: ManagerStaffService) {}
+  constructor(private mStaffService: ManagerStaffService, private notifyService: NotificationService) {}
 
   ngOnInit() {
     this.showListStaff();
@@ -37,9 +38,20 @@ export class ManagerStaffComponent implements OnInit {
     this.detailComponent.onOpenModal();
   }
   onDeleteStaff(id: number) {
-    this.deleteConfirm.onOpenModalConfirmDelete(id);
+    this.deleteConfirmComponent.onOpenModalConfirmDelete(id);
   }
-
+  deleteStaff(id: number) {
+    this.mStaffService
+      .deleteStaff(id)
+      .then(() => {
+        this.showListStaff();
+        this.notifyService.showSuccess('Xóa thành công !!', 'Success');
+      })
+      .catch(() => {
+        this.showListStaff();
+        this.notifyService.showError('Xóa thất bại !!', 'Error');
+      });
+  }
   onEditStaff(id: number) {
     this.detailComponent.editStaff(id);
   }

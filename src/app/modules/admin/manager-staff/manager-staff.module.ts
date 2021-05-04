@@ -6,7 +6,6 @@ import { SharedModule } from 'src/app/shared/shared/shared.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ManagerStaffService } from './manager-staff.service';
 import { AdminService } from '../admin.service';
-import { DeleteConfirmComponent } from './delete-confirm/delete-confirm.component';
 
 @NgModule({
   imports: [
@@ -17,12 +16,10 @@ import { DeleteConfirmComponent } from './delete-confirm/delete-confirm.componen
   declarations: [
     ManagerStaffComponent,
     ManagerStaffDetailComponent,
-    DeleteConfirmComponent,
   ],
   exports: [
     ManagerStaffComponent,
     ManagerStaffDetailComponent,
-    DeleteConfirmComponent,
   ],
   providers: [AdminService, HttpClient, ManagerStaffService],
 })

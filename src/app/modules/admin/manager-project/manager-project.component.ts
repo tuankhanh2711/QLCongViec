@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DuAn } from 'src/app/shared/models/project.model';
 import { CongViec } from 'src/app/shared/models/task.model';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { DeleteConfirmComponent } from '../../core/delete-confirm/delete-confirm.component';
 import { ManagerProjectDetailComponent } from './manager-project-detail/manager-project-detail.component';
 import { ManagerProjectFuncComponent } from './manager-project-func/manager-project-func.component';
 import { ManagerProjectService } from './manager-project.service';
@@ -19,8 +21,13 @@ export class ManagerProjectComponent implements OnInit {
   funcProjectComponont: ManagerProjectFuncComponent;
   @ViewChild(ManagerProjectDetailComponent)
   detailComponent: ManagerProjectDetailComponent;
+  @ViewChild(DeleteConfirmComponent)
+  deleteConfirmComponent: DeleteConfirmComponent;
 
-  constructor(private mProjectService: ManagerProjectService) {}
+  constructor(
+    private mProjectService: ManagerProjectService,
+    private notifyService: NotificationService
+  ) {}
 
   ngOnInit() {
     this.showListProject();
@@ -56,7 +63,19 @@ export class ManagerProjectComponent implements OnInit {
     // this.funcProjectComponont.onOpenModalDetail();
   }
   onDeleteProject(id: number) {
-    this.funcProjectComponont.deleteProject(id);
+    this.deleteConfirmComponent.onOpenModalConfirmDelete(id);
+  }
+  deleteProject(id: number) {
+    this.mProjectService
+      .deleteProject(id)
+      .then(() => {
+        this.showListProject();
+        this.notifyService.showSuccess('Xóa thành công !!', 'Success');
+      })
+      .catch(() => {
+        this.showListProject();
+        this.notifyService.showError('Xóa thất bại !!', 'Error');
+      });
   }
   reloadData(result) {
     if (result) this.showListProject();

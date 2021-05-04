@@ -96,18 +96,6 @@ export class ManagerProjectFuncComponent implements OnInit {
     this.modalRef = this.modalService.show(this.template);
     this.showSingleProject(id);
   }
-  deleteProject(id: number) {
-    this.mProjectService
-      .deleteProject(id)
-      .then(() => {
-        this.callBackEventEmitter.emit(true);
-        this.notifyService.showSuccess('Xóa thành công !!', 'Success');
-      })
-      .catch(() => {
-        this.callBackEventEmitter.emit(false);
-        this.notifyService.showError('Xóa thất bại !!', 'Error');
-      });
-  }
   onOpenModal() {
     this.modalRef = this.modalService.show(this.template);
   }

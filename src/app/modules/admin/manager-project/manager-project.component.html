@@ -1,6 +1,16 @@
-<app-manager-project-func (callBackEventEmitter)="reloadData($event)"></app-manager-project-func>
+<app-manager-project-func
+  (callBackEventEmitter)="reloadData($event)"
+></app-manager-project-func>
 <app-manager-project-detail></app-manager-project-detail>
-<button type="button" class="btn btn-primary offset-10 mb-3" (click)="onAddProject()">
+<app-delete-confirm
+  (callBackEventEmitter)="reloadData($event)"
+  (agreeDelete)="deleteProject($event)"
+></app-delete-confirm>
+<button
+  type="button"
+  class="btn btn-primary offset-10 mb-3"
+  (click)="onAddProject()"
+>
   Thêm dự án +
 </button>
 
@@ -14,7 +24,10 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let project of projectList; let i = index" (click)="onViewTaskByIdProject(project.id)">
+    <tr
+      *ngFor="let project of projectList; let i = index"
+      (click)="onViewTaskByIdProject(project.id)"
+    >
       <th scope="row">{{ i + 1 }}</th>
       <td>{{ project.tenDuAn }}</td>
       <td>{{ project.trangThai ? "Đã hoàn thành" : " Chưa hoàn thành" }}</td>
@@ -22,7 +35,10 @@
         <button class="btn btn-primary mr-2" (click)="onShowDetail(project.id)">
           Xem chi tiết
         </button>
-        <button class="btn btn-success mr-2" (click)="onEditProject(project.id)">
+        <button
+          class="btn btn-success mr-2"
+          (click)="onEditProject(project.id)"
+        >
           Sửa
         </button>
         <button class="btn btn-danger" (click)="onDeleteProject(project.id)">

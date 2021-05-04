@@ -104,7 +104,4 @@ export class ManagerStaffDetailComponent implements OnInit {
     this.createUserForm.controls.matKhau.setValue('');
     this.createUserForm.controls.role.setValue('');
   }
-  // reLoad() {
-  //   window.location.reload();
-  // }
 }

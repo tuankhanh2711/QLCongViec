@@ -7,7 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StaffComponent implements OnInit {
   step: number = 0;
-  constructor() {}
+  constructor() {
+    var activeTab = localStorage.getItem('activeTabStaffPage');
+    if (activeTab !== undefined && activeTab !== null && activeTab !== '') {
+      this.step = +activeTab;
+    }
+  }
 
   ngOnInit() {}
+  changeTab(index) {
+    this.step = index;
+    localStorage.setItem('activeTabStaffPage', index);
+  }
 }
